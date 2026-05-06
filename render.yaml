@@ -1,0 +1,50 @@
+databases:
+  - name: farmacia-postgres
+    databaseName: farmacia
+    user: farmacia_user
+
+services:
+  - type: web
+    name: farmacia-api
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run seed
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: farmacia-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: farmacia-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: farmacia-postgres
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: farmacia-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: farmacia-postgres
+          property: password
+      - key: DB_SSL
+        value: "true"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: CORS_ORIGIN
+        sync: false
+      - key: ADMIN_NAME
+        value: Administrador
+      - key: ADMIN_EMAIL
+        value: admin@farmacia.test
+      - key: ADMIN_PASSWORD
+        sync: false
+
